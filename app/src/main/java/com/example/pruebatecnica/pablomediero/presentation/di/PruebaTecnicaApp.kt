@@ -1,9 +1,8 @@
-package com.example.pruebatecnica.pablomediero.presentation.ui.di
+package com.example.pruebatecnica.pablomediero.presentation.di
 
 import android.app.Application
-import com.example.pruebatecnica.pablomediero.data.repository.di.dataModule
-import com.example.pruebatecnica.pablomediero.domain.usecases.di.domainModule
-import com.example.pruebatecnica.pablomediero.presentation.viewmodels.di.uiModule
+import com.example.pruebatecnica.pablomediero.data.di.dataModule
+import com.example.pruebatecnica.pablomediero.domain.di.domainModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext

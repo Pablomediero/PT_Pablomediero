@@ -1,4 +1,4 @@
-package com.example.pruebatecnica.pablomediero.data.repository.di
+package com.example.pruebatecnica.pablomediero.data.di
 
 import org.koin.core.module.Module
 import org.koin.dsl.module
