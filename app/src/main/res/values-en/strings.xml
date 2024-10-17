@@ -3,4 +3,6 @@
     <string name="app_name">PruebaTecnica</string>
     <string name="test_title">Test Title</string>
     <string name="test_desc">Test Description</string>
+    <string name="contacts">CONTACTS</string>
+    <string name="username">USER NAME</string>
 </resources>

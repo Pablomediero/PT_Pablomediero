@@ -7,6 +7,8 @@ import com.example.pruebatecnica.pablomediero.core.ui.theme.colors.LocalPTpmedie
 import com.example.pruebatecnica.pablomediero.core.ui.theme.colors.PTpmedieroColors
 import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.LocalPTpmedieroDimens
 import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PtpmedieroDimens
+import com.example.pruebatecnica.pablomediero.core.ui.theme.icons.LocalPTpmedieroIcons
+import com.example.pruebatecnica.pablomediero.core.ui.theme.icons.PTpmedieroIcons
 import com.example.pruebatecnica.pablomediero.core.ui.theme.strings.LocalPTpmedieroStrings
 import com.example.pruebatecnica.pablomediero.core.ui.theme.strings.PTpmedieroStrings
 import com.example.pruebatecnica.pablomediero.core.ui.theme.types.LocalPTpmedieroTypes
@@ -39,4 +41,5 @@ object PTpmedieroTheme {
     val colors : PTpmedieroColors @Composable get() = LocalPTpmedieroColors.current
     val dimens : PtpmedieroDimens @Composable get() = LocalPTpmedieroDimens.current
     val strings : PTpmedieroStrings @Composable get() = LocalPTpmedieroStrings.current
+    val icons : PTpmedieroIcons @Composable get() = LocalPTpmedieroIcons.current
 }
