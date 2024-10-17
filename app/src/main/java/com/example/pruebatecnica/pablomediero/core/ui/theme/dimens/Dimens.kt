@@ -9,9 +9,15 @@ import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PTpmedieroDim
 import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PTpmedieroDimensDefaults.Dimens20
 import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PTpmedieroDimensDefaults.Dimens200
 import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PTpmedieroDimensDefaults.Dimens30
+import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PTpmedieroDimensDefaults.Dimens4
 import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PTpmedieroDimensDefaults.Dimens50
+import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PTpmedieroDimensDefaults.Dimens6
+import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PTpmedieroDimensDefaults.Dimens8
 
 private object PTpmedieroDimensDefaults {
+    val Dimens4: Dp = 4.dp
+    val Dimens6: Dp = 6.dp
+    val Dimens8: Dp = 8.dp
     val Dimens10: Dp = 10.dp
     val Dimens20: Dp = 20.dp
     val Dimens30: Dp = 30.dp
@@ -22,6 +28,9 @@ private object PTpmedieroDimensDefaults {
 
 @Immutable
 data class PtpmedieroDimens(
+    val dimens4: Dp = Dimens4,
+    val dimens6: Dp = Dimens6,
+    val dimens8: Dp = Dimens8,
     val dimens10: Dp = Dimens10,
     val dimens20: Dp = Dimens20,
     val dimens30: Dp = Dimens30,
