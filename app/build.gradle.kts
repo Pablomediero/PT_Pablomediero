@@ -63,9 +63,11 @@ dependencies {
 
     implementation(libs.koin.android)
     implementation(libs.retrofit)
+    implementation(libs.logging.interceptor)
     implementation(libs.gson)
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
+    implementation(libs.androidx.navigation.compose)
     ksp(libs.room.compiler)
 
     testImplementation(libs.junit)
