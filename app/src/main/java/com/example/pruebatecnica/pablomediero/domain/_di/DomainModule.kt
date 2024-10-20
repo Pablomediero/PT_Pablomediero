@@ -1,4 +1,4 @@
-package com.example.pruebatecnica.pablomediero.domain.di
+package com.example.pruebatecnica.pablomediero.domain._di
 
 import org.koin.core.module.Module
 import org.koin.dsl.module
