@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import com.example.pruebatecnica.pablomediero.core.ui.annotations.ThemePreviews
 import com.example.pruebatecnica.pablomediero.core.ui.theme.PTpmedieroTheme
+import timber.log.Timber
 
 
 @Composable
@@ -23,7 +24,9 @@ fun CustomNavigationComponent(
     modifier: Modifier,
     startIcon: ImageVector,
     text: String,
-    trailIcon: ImageVector
+    trailIcon: ImageVector,
+    onStartIconClick: () -> Unit,
+    onTrailIconClick: () -> Unit
 ) {
     Row(
         modifier = modifier,
@@ -31,8 +34,10 @@ fun CustomNavigationComponent(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         IconButton(
-
-            onClick = { }
+            onClick = {
+                Timber.i("START ICON CLICK")
+                onStartIconClick()
+            }
         ) {
             Icon(
                 modifier = Modifier.size(PTpmedieroTheme.dimens.dimens30),
@@ -50,7 +55,9 @@ fun CustomNavigationComponent(
             )
         }
         IconButton(
-            onClick = { }
+            onClick = {
+                onTrailIconClick()
+            }
         ) {
             Icon(
                 modifier = Modifier.size(PTpmedieroTheme.dimens.dimens30),
@@ -68,6 +75,8 @@ private fun PreviewCustomNavigationComponent() {
         Modifier.fillMaxWidth(),
         startIcon = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconArrowBack),
         text = stringResource(id = PTpmedieroTheme.strings.contacts),
-        trailIcon = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconMoreActions)
+        trailIcon = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconMoreActions),
+        onStartIconClick = {},
+        onTrailIconClick = {}
     )
 }

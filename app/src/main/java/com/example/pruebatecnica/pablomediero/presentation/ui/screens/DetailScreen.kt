@@ -80,7 +80,9 @@ fun HeaderDetailScreen(modifier: Modifier) {
             modifier = Modifier.fillMaxWidth(),
             startIcon = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconArrowBack),
             text = stringResource(id = PTpmedieroTheme.strings.username),
-            trailIcon = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconMoreActions)
+            trailIcon = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconMoreActions),
+            onTrailIconClick = {},
+            onStartIconClick = {}
         )
     }
 }

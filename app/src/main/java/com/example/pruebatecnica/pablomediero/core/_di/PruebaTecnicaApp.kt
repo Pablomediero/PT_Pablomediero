@@ -7,10 +7,12 @@ import com.example.pruebatecnica.pablomediero.presentation._di.uiModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext
+import timber.log.Timber
 
 class PruebaTecnicaApp : Application(){
     override fun onCreate() {
         super.onCreate()
+        Timber.plant(Timber.DebugTree())
         GlobalContext.startKoin {
             androidLogger()
             androidContext(this@PruebaTecnicaApp)
