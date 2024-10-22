@@ -3,7 +3,7 @@ package com.example.pruebatecnica.pablomediero.data._di
 import com.example.pruebatecnica.pablomediero.data.datasources.remote.Const.Constants.API_URL
 import com.example.pruebatecnica.pablomediero.data.datasources.remote.DataSource
 import com.example.pruebatecnica.pablomediero.data.datasources_core.DataSourceImpl
-import com.example.pruebatecnica.pablomediero.data.datasources_core.remote.ApiService
+import com.example.pruebatecnica.pablomediero.data.datasources_core.remote.service.ApiService
 import com.example.pruebatecnica.pablomediero.data.repository.UsersRepositoryImpl
 import com.example.pruebatecnica.pablomediero.domain.repository.UsersRepository
 import okhttp3.OkHttpClient

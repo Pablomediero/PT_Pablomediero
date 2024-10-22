@@ -1,7 +1,7 @@
 package com.example.pruebatecnica.pablomediero.data.datasources_core
 
 import com.example.pruebatecnica.pablomediero.data.datasources.remote.DataSource
-import com.example.pruebatecnica.pablomediero.data.datasources_core.remote.ApiService
+import com.example.pruebatecnica.pablomediero.data.datasources_core.remote.service.ApiService
 import com.example.pruebatecnica.pablomediero.data.models.ApiResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
