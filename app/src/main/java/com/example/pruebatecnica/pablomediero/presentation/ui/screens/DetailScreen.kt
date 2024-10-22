@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -46,7 +47,7 @@ fun DetailScreen() {
                 .offset(x = 20.dp, y = 110.dp)
                 .zIndex(1f)
                 .border(5.dp, Color.Gray, CircleShape),
-
+            contentScale = ContentScale.Crop,
             painter = painterResource(id = PTpmedieroTheme.icons.iconPerson)
         )
         Column(
@@ -164,6 +165,7 @@ private fun InformationComponent(
         ) {
             CustomCircleImage(
                 painter = startIcon,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(32.dp)
                     .clip(CircleShape)

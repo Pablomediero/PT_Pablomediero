@@ -1,4 +1,4 @@
-package com.example.pruebatecnica.pablomediero.data.datasources_core.remote
+package com.example.pruebatecnica.pablomediero.data.datasources_core.remote.service
 
 import com.example.pruebatecnica.pablomediero.data.models.ApiResponse
 import retrofit2.http.GET

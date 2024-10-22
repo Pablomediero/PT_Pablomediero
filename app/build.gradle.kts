@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     ksp(libs.androidx.room.compiler)
     implementation(libs.com.jakewharton.timber)
+    implementation(libs.io.coil)
 
 
     testImplementation(libs.junit)

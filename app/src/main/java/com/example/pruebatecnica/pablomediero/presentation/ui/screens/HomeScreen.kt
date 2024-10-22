@@ -2,6 +2,7 @@ package com.example.pruebatecnica.pablomediero.presentation.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,10 +32,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.example.pruebatecnica.pablomediero.core.composables.CustomCircleImage
 import com.example.pruebatecnica.pablomediero.core.composables.CustomNavigationComponent
 import com.example.pruebatecnica.pablomediero.core.ui.annotations.ThemePreviews
@@ -102,9 +104,7 @@ fun HeaderHomeScreen(
         startIcon = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconArrowBack),
         text = stringResource(id = PTpmedieroTheme.strings.contacts),
         trailIcon = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconMoreActions),
-        onStartIconClick = {
-
-        },
+        onStartIconClick = {},
         onTrailIconClick = {}
     )
 }
@@ -146,12 +146,15 @@ private fun ItemUser(user: User) {
             .fillMaxWidth()
             .background(Color.White)
             .padding(vertical = PTpmedieroTheme.dimens.dimens8)
+            .clickable {
+            }
     ) {
         Column(
             modifier = Modifier.padding(end = PTpmedieroTheme.dimens.dimens10)
         ) {
             CustomCircleImage(
-                painter = painterResource(PTpmedieroTheme.icons.iconPerson),
+                painter = rememberAsyncImagePainter(model = user.picture.thumbnail),
+                contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .size(48.dp)
                     .clip(CircleShape)
@@ -168,7 +171,7 @@ private fun ItemUser(user: User) {
             ) {
                 Column() {
                     Text(
-                        text = "${user.name.title} ${user.name.first}",
+                        text = "${user.name.first} ${user.name.last}",
                         style = PTpmedieroTheme.types.typography.titleSmall,
                         color = Color.Black
                     )
