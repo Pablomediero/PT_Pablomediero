@@ -1,4 +1,5 @@
 package com.example.pruebatecnica.pablomediero.presentation.ui.screens
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -15,15 +16,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -33,22 +41,67 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.pruebatecnica.pablomediero.core.composables.CustomCircleImage
 import com.example.pruebatecnica.pablomediero.core.composables.CustomNavigationComponent
 import com.example.pruebatecnica.pablomediero.core.ui.annotations.ThemePreviews
 import com.example.pruebatecnica.pablomediero.core.ui.theme.PTpmedieroTheme
+import com.example.pruebatecnica.pablomediero.core.ui.uistates.UIState
+import com.example.pruebatecnica.pablomediero.core.ui.utils.toFormattedDate
+import com.example.pruebatecnica.pablomediero.data.models.User
+import com.example.pruebatecnica.pablomediero.presentation.navigation.AppRoutes
+import com.example.pruebatecnica.pablomediero.presentation.viewmodels.UserViewModel
+import org.koin.androidx.compose.koinViewModel
+import timber.log.Timber
 
 @Composable
-fun DetailScreen() {
+fun DetailScreen(
+    navController: NavController,
+    email: String?,
+    userViewModel: UserViewModel = koinViewModel()
+) {
+    LaunchedEffect(Unit) {
+        userViewModel.getUserDetail(email ?: "")
+    }
+
+    val usersData by userViewModel.user.collectAsState()
+    val user = remember { mutableStateOf<User?>(null) }
+    val isLoading = remember { mutableStateOf(false) }
+
+    when (val state = usersData) {
+        UIState.Loading -> {
+            isLoading.value = true
+        }
+
+        is UIState.Error -> {
+            Timber.e("Error UI ${state.exception}")
+            isLoading.value = false
+        }
+
+        is UIState.Success -> {
+            state.data?.let {
+                Timber.i("USUARIO: ${user.value}")
+                user.value = it
+            } ?: run {
+                Timber.e("No se encontró ningún usuario.")
+            }
+            isLoading.value = false
+        }
+    }
     Box(modifier = Modifier.fillMaxSize()) {
         CustomCircleImage(
             modifier = Modifier
                 .size(90.dp)
-                .offset(x = 20.dp, y = 110.dp)
+                .offset(x = 20.dp, y = 165.dp)
                 .zIndex(1f)
-                .border(5.dp, Color.Gray, CircleShape),
+                .border(5.dp, MaterialTheme.colorScheme.background, CircleShape)
+                .shadow(elevation = 0.dp),
             contentScale = ContentScale.Crop,
-            painter = painterResource(id = PTpmedieroTheme.icons.iconPerson)
+            painter = rememberAsyncImagePainter(
+                model = user.value?.picture?.thumbnail ?: PTpmedieroTheme.icons.iconPerson
+            )
         )
         Column(
             modifier = Modifier
@@ -59,14 +112,33 @@ fun DetailScreen() {
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.primary)
                     .fillMaxWidth()
-                    .fillMaxHeight(0.25f)
+                    .fillMaxHeight(0.25f),
+                onStartIconClick = {
+                    navController.navigate(AppRoutes.HomeScreen.route)
+                }
             )
 
-            BodyDetailScreen(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.background)
-                    .fillMaxSize()
-            )
+            user.value?.let {
+                BodyDetailScreen(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
+                        .fillMaxSize(),
+                    user = it
+                )
+            } ?: run {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Transparent),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(50.dp),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
 
         }
 
@@ -75,26 +147,26 @@ fun DetailScreen() {
 }
 
 @Composable
-fun HeaderDetailScreen(modifier: Modifier) {
-    Column (modifier = modifier) {
+fun HeaderDetailScreen(modifier: Modifier, onStartIconClick: () -> Unit) {
+    Column(modifier = modifier) {
         CustomNavigationComponent(
             modifier = Modifier.fillMaxWidth(),
             startIcon = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconArrowBack),
             text = stringResource(id = PTpmedieroTheme.strings.username),
             trailIcon = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconMoreActions),
             onTrailIconClick = {},
-            onStartIconClick = {}
+            onStartIconClick = { onStartIconClick() }
         )
     }
 }
 
 
 @Composable
-fun BodyDetailScreen(modifier: Modifier) {
+fun BodyDetailScreen(modifier: Modifier, user: User) {
     Column(
         modifier = modifier
     ) {
-        Row (
+        Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
@@ -105,7 +177,7 @@ fun BodyDetailScreen(modifier: Modifier) {
                 Icon(
                     modifier = Modifier.size(PTpmedieroTheme.dimens.dimens30),
                     imageVector = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconPhoto),
-                    contentDescription = "Icon More Actions"
+                    contentDescription = "Icon Photo "
                 )
             }
             Spacer(Modifier.width(PTpmedieroTheme.dimens.dimens4))
@@ -115,34 +187,34 @@ fun BodyDetailScreen(modifier: Modifier) {
                 Icon(
                     modifier = Modifier.size(PTpmedieroTheme.dimens.dimens30),
                     imageVector = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconEdit),
-                    contentDescription = "Icon More Actions"
+                    contentDescription = "Icon Edit"
                 )
             }
         }
         InformationComponent(
             startIcon = painterResource(id = PTpmedieroTheme.icons.iconPerson),
             title = "Nombre y apellidos",
-            subTitle = "Nombre"
+            subTitle = "${user.name.first} ${user.name.last}"
         )
         InformationComponent(
             startIcon = painterResource(id = PTpmedieroTheme.icons.iconPersonEmail),
             title = "Email",
-            subTitle = "Nombre"
+            subTitle = user.email
         )
         InformationComponent(
             startIcon = painterResource(id = PTpmedieroTheme.icons.iconPersonGender),
             title = "Género",
-            subTitle = "Nombre"
+            subTitle = user.gender
         )
         InformationComponent(
             startIcon = painterResource(id = PTpmedieroTheme.icons.iconDateRegister),
-            title = "Nombre",
-            subTitle = "Nombre"
+            title = "Fecha de registro",
+            subTitle = user.registered.date.toFormattedDate()
         )
         InformationComponent(
             startIcon = painterResource(id = PTpmedieroTheme.icons.iconPhone),
-            title = "Nombre",
-            subTitle = "Nombre"
+            title = "Telefono",
+            subTitle = user.phone
         )
     }
 }
@@ -161,7 +233,10 @@ private fun InformationComponent(
             .padding(vertical = PTpmedieroTheme.dimens.dimens10)
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = PTpmedieroTheme.dimens.dimens30, vertical = PTpmedieroTheme.dimens.dimens10)
+            modifier = Modifier.padding(
+                horizontal = PTpmedieroTheme.dimens.dimens30,
+                vertical = PTpmedieroTheme.dimens.dimens10
+            )
         ) {
             CustomCircleImage(
                 painter = startIcon,
@@ -208,12 +283,13 @@ private fun InformationComponent(
 }
 
 
-
-
 @ThemePreviews
 @Composable
 private fun PreviewHomeScreen() {
     MaterialTheme {
-        DetailScreen()
+        DetailScreen(
+            navController = rememberNavController(),
+            email = ""
+        )
     }
 }

@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import com.example.pruebatecnica.pablomediero.core.ui.annotations.ThemePreviews
 import com.example.pruebatecnica.pablomediero.core.ui.theme.PTpmedieroTheme
-import timber.log.Timber
 
 
 @Composable
@@ -34,21 +33,18 @@ fun CustomNavigationComponent(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         IconButton(
-            onClick = {
-                Timber.i("START ICON CLICK")
-                onStartIconClick()
-            }
+            onClick = { onStartIconClick() }
         ) {
             Icon(
                 modifier = Modifier.size(PTpmedieroTheme.dimens.dimens30),
                 imageVector = startIcon,
-                contentDescription = "Icon Arrow Back"
+                contentDescription = "Icon Arrow Back",
+                tint = PTpmedieroTheme.colors.ThemePrimaryDark
             )
         }
         Column(
             modifier = Modifier.weight(3f),
-
-            ) {
+        ) {
             Text(
                 text = text,
                 style = PTpmedieroTheme.types.typography.titleMedium

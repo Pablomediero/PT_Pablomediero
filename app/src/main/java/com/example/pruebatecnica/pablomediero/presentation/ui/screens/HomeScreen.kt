@@ -1,7 +1,6 @@
 package com.example.pruebatecnica.pablomediero.presentation.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,6 +35,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.pruebatecnica.pablomediero.core.composables.CustomCircleImage
 import com.example.pruebatecnica.pablomediero.core.composables.CustomNavigationComponent
@@ -43,11 +44,13 @@ import com.example.pruebatecnica.pablomediero.core.ui.annotations.ThemePreviews
 import com.example.pruebatecnica.pablomediero.core.ui.theme.PTpmedieroTheme
 import com.example.pruebatecnica.pablomediero.core.ui.uistates.UIState
 import com.example.pruebatecnica.pablomediero.data.models.User
+import com.example.pruebatecnica.pablomediero.presentation.navigation.AppRoutes
 import com.example.pruebatecnica.pablomediero.presentation.viewmodels.UserViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
+    navController: NavController,
     userViewModel: UserViewModel = koinViewModel()
 ) {
     val usersData by userViewModel.usersFlow.collectAsState()
@@ -57,15 +60,17 @@ fun HomeScreen(
         UIState.Loading -> {
             isLoading.value = true
         }
+
         is UIState.Error -> {
             isLoading.value = false
         }
+
         is UIState.Success -> {
             usersList.value = state.data?.results!!
             isLoading.value = false
         }
     }
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         userViewModel.fetchRandomUsers()
     }
     Column(
@@ -88,7 +93,12 @@ fun HomeScreen(
                 )
                 .fillMaxSize(),
             users = usersList.value,
-            isLoading = isLoading.value
+            isLoading = isLoading.value,
+            onItemClick = { userEmail ->
+                navController.navigate(
+                    "${AppRoutes.DetailScreen.route}/$userEmail"
+                )
+            }
 
         )
     }
@@ -110,17 +120,20 @@ fun HeaderHomeScreen(
 }
 
 @Composable
-fun BodyHomeScreen(modifier: Modifier, users: List<User>, isLoading: Boolean) {
+fun BodyHomeScreen(modifier: Modifier, users: List<User>, isLoading: Boolean, onItemClick: (String) -> Unit) {
     Column(
         modifier = modifier
     ) {
-        if(!isLoading){
+        if (!isLoading) {
             LazyColumn {
                 items(users) { user ->
-                    ItemUser(user)
+                    ItemUser(
+                        user = user,
+                        onItemClick = onItemClick
+                    )
                 }
             }
-        }else{
+        } else {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -139,7 +152,7 @@ fun BodyHomeScreen(modifier: Modifier, users: List<User>, isLoading: Boolean) {
 }
 
 @Composable
-private fun ItemUser(user: User) {
+private fun ItemUser(user: User, onItemClick: (String) -> Unit) {
     Row(
         verticalAlignment = Alignment.Top,
         modifier = Modifier
@@ -147,6 +160,7 @@ private fun ItemUser(user: User) {
             .background(Color.White)
             .padding(vertical = PTpmedieroTheme.dimens.dimens8)
             .clickable {
+                onItemClick(user.email)
             }
     ) {
         Column(
@@ -154,11 +168,10 @@ private fun ItemUser(user: User) {
         ) {
             CustomCircleImage(
                 painter = rememberAsyncImagePainter(model = user.picture.thumbnail),
-                contentScale = ContentScale.FillBounds,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(48.dp)
                     .clip(CircleShape)
-                    .border(1.dp, Color.Gray, CircleShape)
             )
         }
         Column(
@@ -208,6 +221,6 @@ private fun ItemUser(user: User) {
 @Composable
 private fun PreviewHomeScreen() {
     MaterialTheme {
-        HomeScreen()
+        HomeScreen(navController = rememberNavController())
     }
 }
