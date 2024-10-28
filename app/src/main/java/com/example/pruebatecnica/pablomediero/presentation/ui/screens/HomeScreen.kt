@@ -26,6 +26,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,9 +40,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
-import com.example.pruebatecnica.pablomediero.core.composables.CustomCircleImage
-import com.example.pruebatecnica.pablomediero.core.composables.CustomNavigationComponent
+import com.example.pruebatecnica.pablomediero.core.composable.CustomDialog
 import com.example.pruebatecnica.pablomediero.core.ui.annotations.ThemePreviews
+import com.example.pruebatecnica.pablomediero.core.ui.composables.CustomCircleImage
+import com.example.pruebatecnica.pablomediero.core.ui.composables.CustomNavigationComponent
 import com.example.pruebatecnica.pablomediero.core.ui.theme.PTpmedieroTheme
 import com.example.pruebatecnica.pablomediero.core.ui.uistates.UIState
 import com.example.pruebatecnica.pablomediero.data.models.User
@@ -56,23 +59,35 @@ fun HomeScreen(
     val usersData by userViewModel.usersFlow.collectAsState()
     val usersList = remember { mutableStateOf(emptyList<User>()) }
     val isLoading = remember { mutableStateOf(false) }
+    var showErrorDialog by rememberSaveable{ mutableStateOf(false) }
     when (val state = usersData) {
         UIState.Loading -> {
             isLoading.value = true
+            showErrorDialog = false
         }
 
         is UIState.Error -> {
+            showErrorDialog = true
             isLoading.value = false
         }
 
         is UIState.Success -> {
-            usersList.value = state.data?.results!!
+            usersList.value = state.data!!
             isLoading.value = false
+            showErrorDialog = false
         }
     }
     LaunchedEffect(Unit) {
         userViewModel.fetchRandomUsers()
     }
+    CustomDialog(
+        showDialog = showErrorDialog,
+        uiState = usersData,
+        onDismiss = {
+            showErrorDialog = false
+            userViewModel.fetchRandomUsers()
+        }
+    )
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)

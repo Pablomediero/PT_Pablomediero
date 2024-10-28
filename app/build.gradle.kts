@@ -45,7 +45,13 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes.addAll(
+                arrayOf(
+                    "/META-INF/{AL2.0,LGPL2.1}",
+                    "/META-INF/LICENSE.md",
+                    "META-INF/LICENSE-notice.md"
+                )
+            )
         }
     }
 }
@@ -73,6 +79,8 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.com.jakewharton.timber)
     implementation(libs.io.coil)
+
+    implementation(libs.bundles.testing)
 
 
     testImplementation(libs.junit)
