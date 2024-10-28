@@ -1,4 +1,4 @@
-package com.example.pruebatecnica.pablomediero.core.composables
+package com.example.pruebatecnica.pablomediero.core.ui.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border

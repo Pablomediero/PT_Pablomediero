@@ -44,9 +44,9 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
-import com.example.pruebatecnica.pablomediero.core.composables.CustomCircleImage
-import com.example.pruebatecnica.pablomediero.core.composables.CustomNavigationComponent
 import com.example.pruebatecnica.pablomediero.core.ui.annotations.ThemePreviews
+import com.example.pruebatecnica.pablomediero.core.ui.composables.CustomCircleImage
+import com.example.pruebatecnica.pablomediero.core.ui.composables.CustomNavigationComponent
 import com.example.pruebatecnica.pablomediero.core.ui.theme.PTpmedieroTheme
 import com.example.pruebatecnica.pablomediero.core.ui.uistates.UIState
 import com.example.pruebatecnica.pablomediero.core.ui.utils.toFormattedDate

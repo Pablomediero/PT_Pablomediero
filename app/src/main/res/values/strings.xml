@@ -4,4 +4,9 @@
     <string name="test_desc">Descripcion de Prueba</string>
     <string name="contacts">CONTACTOS</string>
     <string name="username">NOMBRE USUARIO</string>
+    <string name="custom_dialog_error_no_connection_error_code_title">Problemas de conexión</string>
+    <string name="custom_dialog_error_no_connection_error_code_description">Revisa tu conexión a internet.</string>
+    <string name="custom_dialog_error_unknown_error_title">Algo ha ocurrido</string>
+    <string name="custom_dialog_error_unknown_error_description">Contacta con soporte.</string>
+
 </resources>

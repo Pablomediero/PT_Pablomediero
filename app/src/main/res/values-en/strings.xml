@@ -5,4 +5,11 @@
     <string name="test_desc">Test Description</string>
     <string name="contacts">CONTACTS</string>
     <string name="username">USER NAME</string>
+    <string name="custom_dialog_error_no_connection_error_code_title">Connection Issues</string>
+    <string name="custom_dialog_error_no_connection_error_code_description">Check your internet connection.</string>
+    <string name="custom_dialog_error_unknown_error_title">Something has occurred</string>
+    <string name="custom_dialog_error_unknown_error_description">Please contact support.</string>
+
+
+
 </resources>
