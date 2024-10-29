@@ -43,7 +43,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.pruebatecnica.pablomediero.core.composable.CustomDialog
 import com.example.pruebatecnica.pablomediero.core.ui.annotations.ThemePreviews
 import com.example.pruebatecnica.pablomediero.core.ui.composables.CustomCircleImage
-import com.example.pruebatecnica.pablomediero.core.ui.composables.CustomNavigationComponent
+import com.example.pruebatecnica.pablomediero.core.ui.composables.CustomNavigationComponentWithSearch
 import com.example.pruebatecnica.pablomediero.core.ui.theme.PTpmedieroTheme
 import com.example.pruebatecnica.pablomediero.core.ui.uistates.UIState
 import com.example.pruebatecnica.pablomediero.data.models.User
@@ -57,9 +57,13 @@ fun HomeScreen(
     userViewModel: UserViewModel = koinViewModel()
 ) {
     val usersData by userViewModel.usersFlow.collectAsState()
+    val filteredUsers by userViewModel.filteredUsers.collectAsState(initial = emptyList())
+    val searchQuery by userViewModel.searchQuery.collectAsState()
     val usersList = remember { mutableStateOf(emptyList<User>()) }
     val isLoading = remember { mutableStateOf(false) }
     var showErrorDialog by rememberSaveable{ mutableStateOf(false) }
+    //var searchQuery by remember { mutableStateOf("Hello") }
+
     when (val state = usersData) {
         UIState.Loading -> {
             isLoading.value = true
@@ -95,9 +99,11 @@ fun HomeScreen(
     ) {
         HeaderHomeScreen(
             modifier = Modifier
-                .padding(top = PTpmedieroTheme.dimens.dimens10)
+                .padding(top = PTpmedieroTheme.dimens.dimens20)
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxWidth(),
+            value = searchQuery,
+            onValueChange = { userViewModel.updateSearchQuery(it)}
         )
         BodyHomeScreen(
             modifier = Modifier
@@ -107,9 +113,10 @@ fun HomeScreen(
                     start = PTpmedieroTheme.dimens.dimens10
                 )
                 .fillMaxSize(),
-            users = usersList.value,
+            users = filteredUsers ?: emptyList(),
             isLoading = isLoading.value,
             onItemClick = { userEmail ->
+                userViewModel.updateSearchQuery("")
                 navController.navigate(
                     "${AppRoutes.DetailScreen.route}/$userEmail"
                 )
@@ -123,14 +130,20 @@ fun HomeScreen(
 @Composable
 fun HeaderHomeScreen(
     modifier: Modifier,
+    value: String,
+    onValueChange: (String) -> Unit
 ) {
-    CustomNavigationComponent(
+    CustomNavigationComponentWithSearch(
         modifier = modifier,
         startIcon = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconArrowBack),
-        text = stringResource(id = PTpmedieroTheme.strings.contacts),
+        startIconColor = PTpmedieroTheme.colors.ThemePrimaryLight,
+        placeholder = stringResource(id = PTpmedieroTheme.strings.filter),
         trailIcon = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconMoreActions),
+        trailIconColor = PTpmedieroTheme.colors.ThemePrimaryLight,
+        onValueChange = onValueChange ,
+        value = value,
         onStartIconClick = {},
-        onTrailIconClick = {}
+        onTrailIconClick = {},
     )
 }
 

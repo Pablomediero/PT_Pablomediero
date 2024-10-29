@@ -9,6 +9,7 @@ import com.example.pruebatecnica.pablomediero.core.ui.theme.strings.PTpmedieroSt
 import com.example.pruebatecnica.pablomediero.core.ui.theme.strings.PTpmedieroStringsDefaults.CustomDialogErrorConnectionTitle
 import com.example.pruebatecnica.pablomediero.core.ui.theme.strings.PTpmedieroStringsDefaults.CustomDialogErrorUnknownDescription
 import com.example.pruebatecnica.pablomediero.core.ui.theme.strings.PTpmedieroStringsDefaults.CustomDialogErrorUnknownTitle
+import com.example.pruebatecnica.pablomediero.core.ui.theme.strings.PTpmedieroStringsDefaults.Filter
 import com.example.pruebatecnica.pablomediero.core.ui.theme.strings.PTpmedieroStringsDefaults.TestDescription
 import com.example.pruebatecnica.pablomediero.core.ui.theme.strings.PTpmedieroStringsDefaults.TestTitle
 import com.example.pruebatecnica.pablomediero.core.ui.theme.strings.PTpmedieroStringsDefaults.Username
@@ -18,6 +19,7 @@ private object PTpmedieroStringsDefaults {
     val TestDescription = R.string.test_desc
     val Contacts = R.string.contacts
     val Username = R.string.username
+    val Filter = R.string.filter
     val CustomDialogErrorConnectionTitle = R.string.custom_dialog_error_no_connection_error_code_title
     val CustomDialogErrorConnectionDescription = R.string.custom_dialog_error_no_connection_error_code_description
     val CustomDialogErrorUnknownTitle = R.string.custom_dialog_error_no_connection_error_code_title
@@ -31,6 +33,7 @@ data class PTpmedieroStrings(
     @StringRes val testDescription: Int = TestDescription,
     @StringRes val contacts: Int = Contacts,
     @StringRes val username: Int = Username,
+    @StringRes val filter: Int = Filter,
     @StringRes val customDialogErrorConnectionCodeTitle: Int = CustomDialogErrorConnectionTitle,
     @StringRes val customDialogErrorConnectionCodeDescription: Int = CustomDialogErrorConnectionDescription,
     @StringRes val customDialogErrorUnknownCodeTitle: Int = CustomDialogErrorUnknownTitle,
