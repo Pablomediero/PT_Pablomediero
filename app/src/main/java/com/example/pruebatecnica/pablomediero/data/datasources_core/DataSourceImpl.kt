@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import okio.IOException
 import retrofit2.HttpException
+import timber.log.Timber
 
 class DataSourceImpl(
     private val apiService: ApiService
@@ -24,6 +25,7 @@ class DataSourceImpl(
                 is IOException -> NO_CONNECTION_ERROR_CODE
                 else -> UNKNOWN_ERROR_CODE
             }
+            Timber.e("Network Error Code: $errorCode")
             emit(Result.failure(HttpErrorCodeException(errorCode)))
         }
      }.flowOn(Dispatchers.IO)

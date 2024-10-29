@@ -14,6 +14,7 @@ import com.example.pruebatecnica.pablomediero.core.ui.theme.icons.PTpmedieroIcon
 import com.example.pruebatecnica.pablomediero.core.ui.theme.icons.PTpmedieroIconsDefaults.IconPersonGender
 import com.example.pruebatecnica.pablomediero.core.ui.theme.icons.PTpmedieroIconsDefaults.IconPhone
 import com.example.pruebatecnica.pablomediero.core.ui.theme.icons.PTpmedieroIconsDefaults.IconPhoto
+import com.example.pruebatecnica.pablomediero.core.ui.theme.icons.PTpmedieroIconsDefaults.IconSearch
 
 private object PTpmedieroIconsDefaults{
     val IconArrowBack = R.drawable.ic_arrow_back
@@ -26,6 +27,7 @@ private object PTpmedieroIconsDefaults{
     val IconPhone = R.drawable.ic_phone
     val IconPhoto = R.drawable.ic_photo
     val IconEdit = R.drawable.ic_edit
+    val IconSearch = R.drawable.ic_search
 
 }
 
@@ -40,7 +42,8 @@ data class PTpmedieroIcons(
     @DrawableRes val iconDateRegister: Int = IconDateRegister,
     @DrawableRes val iconPhone: Int = IconPhone,
     @DrawableRes val iconPhoto: Int = IconPhoto,
-    @DrawableRes val iconEdit: Int = IconEdit
+    @DrawableRes val iconEdit: Int = IconEdit,
+    @DrawableRes val iconSearch: Int = IconSearch
 )
 
 internal val LocalPTpmedieroIcons = staticCompositionLocalOf { PTpmedieroIcons() }

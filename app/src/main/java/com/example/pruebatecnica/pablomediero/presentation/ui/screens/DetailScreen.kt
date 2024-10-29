@@ -39,12 +39,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
-import com.example.pruebatecnica.pablomediero.core.ui.annotations.ThemePreviews
 import com.example.pruebatecnica.pablomediero.core.ui.composables.CustomCircleImage
 import com.example.pruebatecnica.pablomediero.core.ui.composables.CustomNavigationComponent
 import com.example.pruebatecnica.pablomediero.core.ui.theme.PTpmedieroTheme
@@ -81,12 +81,7 @@ fun DetailScreen(
         }
 
         is UIState.Success -> {
-            state.data?.let {
-                Timber.i("USUARIO: ${user.value}")
-                user.value = it
-            } ?: run {
-                Timber.e("No se encontró ningún usuario.")
-            }
+            user.value = state.data
             isLoading.value = false
         }
     }
@@ -113,33 +108,17 @@ fun DetailScreen(
                     .background(MaterialTheme.colorScheme.primary)
                     .fillMaxWidth()
                     .fillMaxHeight(0.25f),
+                user.value,
                 onStartIconClick = {
                     navController.navigate(AppRoutes.HomeScreen.route)
                 }
             )
-
-            user.value?.let {
-                BodyDetailScreen(
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.background)
-                        .fillMaxSize(),
-                    user = it
-                )
-            } ?: run {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Transparent),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(50.dp),
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
-
+            BodyDetailScreen(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.background)
+                    .fillMaxSize(),
+                user = user.value
+            )
         }
 
     }
@@ -147,12 +126,19 @@ fun DetailScreen(
 }
 
 @Composable
-fun HeaderDetailScreen(modifier: Modifier, onStartIconClick: () -> Unit) {
+fun HeaderDetailScreen(modifier: Modifier, user: User?, onStartIconClick: () -> Unit) {
+    val headerUserName = user?.let {
+        "${it.name.first} ${it.name.last}"
+    } ?: stringResource(id = PTpmedieroTheme.strings.username)
+
     Column(modifier = modifier) {
         CustomNavigationComponent(
             modifier = Modifier.fillMaxWidth(),
             startIcon = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconArrowBack),
-            text = stringResource(id = PTpmedieroTheme.strings.username),
+            startIconColor = PTpmedieroTheme.colors.ThemePrimaryDark,
+            trailIconColor = PTpmedieroTheme.colors.ThemePrimaryDark,
+            text = headerUserName,
+            textColor = PTpmedieroTheme.colors.ThemePrimaryDark,
             trailIcon = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconMoreActions),
             onTrailIconClick = {},
             onStartIconClick = { onStartIconClick() }
@@ -162,61 +148,77 @@ fun HeaderDetailScreen(modifier: Modifier, onStartIconClick: () -> Unit) {
 
 
 @Composable
-fun BodyDetailScreen(modifier: Modifier, user: User) {
-    Column(
-        modifier = modifier
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically
+fun BodyDetailScreen(modifier: Modifier, user: User?) {
+    if (user != null) {
+        Column(
+            modifier = modifier
         ) {
-            IconButton(
-                onClick = { }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    modifier = Modifier.size(PTpmedieroTheme.dimens.dimens30),
-                    imageVector = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconPhoto),
-                    contentDescription = "Icon Photo "
-                )
+                IconButton(
+                    onClick = { }
+                ) {
+                    Icon(
+                        modifier = Modifier.size(PTpmedieroTheme.dimens.dimens30),
+                        imageVector = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconPhoto),
+                        contentDescription = "Icon Photo "
+                    )
+                }
+                Spacer(Modifier.width(PTpmedieroTheme.dimens.dimens4))
+                IconButton(
+                    onClick = { }
+                ) {
+                    Icon(
+                        modifier = Modifier.size(PTpmedieroTheme.dimens.dimens30),
+                        imageVector = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconEdit),
+                        contentDescription = "Icon Edit"
+                    )
+                }
             }
-            Spacer(Modifier.width(PTpmedieroTheme.dimens.dimens4))
-            IconButton(
-                onClick = { }
-            ) {
-                Icon(
-                    modifier = Modifier.size(PTpmedieroTheme.dimens.dimens30),
-                    imageVector = ImageVector.vectorResource(id = PTpmedieroTheme.icons.iconEdit),
-                    contentDescription = "Icon Edit"
-                )
-            }
+            InformationComponent(
+                startIcon = painterResource(id = PTpmedieroTheme.icons.iconPerson),
+                title = "Nombre y apellidos",
+                subTitle = "${user.name.first} ${user.name.last}"
+            )
+            InformationComponent(
+                startIcon = painterResource(id = PTpmedieroTheme.icons.iconPersonEmail),
+                title = "Email",
+                subTitle = user.email
+            )
+            InformationComponent(
+                startIcon = painterResource(id = PTpmedieroTheme.icons.iconPersonGender),
+                title = "Género",
+                subTitle = user.gender
+            )
+            InformationComponent(
+                startIcon = painterResource(id = PTpmedieroTheme.icons.iconDateRegister),
+                title = "Fecha de registro",
+                subTitle = user.registered.date.toFormattedDate()
+            )
+            InformationComponent(
+                startIcon = painterResource(id = PTpmedieroTheme.icons.iconPhone),
+                title = "Telefono",
+                subTitle = user.phone
+            )
         }
-        InformationComponent(
-            startIcon = painterResource(id = PTpmedieroTheme.icons.iconPerson),
-            title = "Nombre y apellidos",
-            subTitle = "${user.name.first} ${user.name.last}"
-        )
-        InformationComponent(
-            startIcon = painterResource(id = PTpmedieroTheme.icons.iconPersonEmail),
-            title = "Email",
-            subTitle = user.email
-        )
-        InformationComponent(
-            startIcon = painterResource(id = PTpmedieroTheme.icons.iconPersonGender),
-            title = "Género",
-            subTitle = user.gender
-        )
-        InformationComponent(
-            startIcon = painterResource(id = PTpmedieroTheme.icons.iconDateRegister),
-            title = "Fecha de registro",
-            subTitle = user.registered.date.toFormattedDate()
-        )
-        InformationComponent(
-            startIcon = painterResource(id = PTpmedieroTheme.icons.iconPhone),
-            title = "Telefono",
-            subTitle = user.phone
-        )
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Transparent),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(50.dp),
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
     }
+
 }
 
 @Composable
@@ -283,7 +285,7 @@ private fun InformationComponent(
 }
 
 
-@ThemePreviews
+@Preview
 @Composable
 private fun PreviewHomeScreen() {
     MaterialTheme {
