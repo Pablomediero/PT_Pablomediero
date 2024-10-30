@@ -21,41 +21,74 @@ import org.junit.Test
 class UsersRepositoryImplTest {
     private lateinit var repository: UsersRepository
     private lateinit var dataSource: DataSource
-    private lateinit var mockModels: List<User>
+    private lateinit var mockUsers: List<User>
+    private lateinit var mockDuplicateUsers: List<User>
 
     @Before
     fun setUp() {
         dataSource = mockk()
         repository = UsersRepositoryImpl(dataSource)
-        mockModels = MockUserData.getUsers()
+        mockUsers = MockUserData.getUsers()
+        mockDuplicateUsers = MockUserData.getDuplicateUsers()
     }
     @Test
-    fun `Test GetAllUsersData Success response`(){
+    fun `Test UsersRepositoryImpl Success Response`(){
         runTest {
             coEvery { dataSource.getAllUsersData() } returns flow {
                 emit(Result.success(ApiResponse(
-                    results = mockModels,
+                    results = mockUsers,
                     info = Info(
                         seed = "testSeed",
                         page = 1,
-                        results = mockModels.size,
+                        results = mockUsers.size,
                         version = "1.0"
                     )
                 )))
             }
             val results = repository.getAllUsersData().first()
 
-            println("Resultado obtenido: ${results.isSuccess}") // Verifica que el flujo emitió algo
-            assertTrue("La respuesta debería ser exitosa", results.isSuccess)
-
-            val response = results.getOrNull()
-            assertNotNull("La respuesta no debería ser nula", response)
-
-            assertTrue("La respuesta debería contener al menos un usuario", response?.isNotEmpty() == true)
-
-            assertFalse(mockModels.size == response?.size)
-
+            assertTrue("Response is Success", results.isSuccess)
+            assertNotNull("Response is not null", results.getOrNull())
+            assertTrue("Response is not empty", results.getOrNull()?.isNotEmpty() == true)
             coVerify { dataSource.getAllUsersData() }
+            assert(mockUsers.size == results.getOrNull()?.size)
+        }
+    }
+
+    @Test
+    fun `Test FilterDuplicateUsers mockDuplicateUsers`(){
+        runTest {
+            coEvery { dataSource.getAllUsersData() } returns flow {
+                emit(Result.success(ApiResponse(
+                    results = mockDuplicateUsers,
+                    info = Info(
+                        seed = "testSeed",
+                        page = 1,
+                        results = mockDuplicateUsers.size,
+                        version = "1.0"
+                    )
+                )))
+            }
+            val results = repository.getAllUsersData().first()
+            assertFalse(mockDuplicateUsers.size == results.getOrNull()?.size)
+        }
+    }
+    @Test
+    fun `Test FilterDuplicateUsers mockUsers`(){
+        runTest {
+            coEvery { dataSource.getAllUsersData() } returns flow {
+                emit(Result.success(ApiResponse(
+                    results = mockUsers,
+                    info = Info(
+                        seed = "testSeed",
+                        page = 1,
+                        results = mockUsers.size,
+                        version = "1.0"
+                    )
+                )))
+            }
+            val results = repository.getAllUsersData().first()
+            assertTrue(mockUsers.size == results.getOrNull()?.size)
         }
     }
 }

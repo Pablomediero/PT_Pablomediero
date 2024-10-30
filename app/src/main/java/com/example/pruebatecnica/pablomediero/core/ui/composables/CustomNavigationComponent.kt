@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,6 +41,7 @@ fun CustomNavigationComponentWithSearch(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column (
+            modifier = Modifier.padding(top = PTpmedieroTheme.dimens.dimens15),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -76,6 +78,7 @@ fun CustomNavigationComponentWithSearch(
             )
         }
         Column (
+            modifier = Modifier.padding(top = PTpmedieroTheme.dimens.dimens15),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

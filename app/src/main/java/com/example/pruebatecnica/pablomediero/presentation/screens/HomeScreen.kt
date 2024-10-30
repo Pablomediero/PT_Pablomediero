@@ -1,4 +1,4 @@
-package com.example.pruebatecnica.pablomediero.presentation.ui.screens
+package com.example.pruebatecnica.pablomediero.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

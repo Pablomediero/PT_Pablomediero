@@ -18,7 +18,7 @@ class DataSourceImpl(
 ) : DataSource {
     override suspend fun getAllUsersData(): Flow<Result<ApiResponse>> = flow {
         try {
-            emit(Result.success(apiService.getRandomUsers(results = 10, page = 1)))
+            emit(Result.success(apiService.getRandomUsers(results = 15, page = 1)))
         } catch (e: Exception){
             val errorCode = when(e){
                 is HttpException -> e.code()

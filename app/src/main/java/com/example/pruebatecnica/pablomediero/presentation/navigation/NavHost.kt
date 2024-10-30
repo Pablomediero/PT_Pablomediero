@@ -6,8 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.pruebatecnica.pablomediero.presentation.ui.screens.DetailScreen
-import com.example.pruebatecnica.pablomediero.presentation.ui.screens.HomeScreen
+import com.example.pruebatecnica.pablomediero.presentation.screens.DetailScreen
+import com.example.pruebatecnica.pablomediero.presentation.screens.HomeScreen
 import com.example.pruebatecnica.pablomediero.presentation.viewmodels.UserViewModel
 import org.koin.androidx.compose.koinViewModel
 

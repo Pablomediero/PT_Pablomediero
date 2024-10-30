@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PTpmedieroDimensDefaults.Dimens10
 import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PTpmedieroDimensDefaults.Dimens100
+import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PTpmedieroDimensDefaults.Dimens15
 import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PTpmedieroDimensDefaults.Dimens20
 import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PTpmedieroDimensDefaults.Dimens200
 import com.example.pruebatecnica.pablomediero.core.ui.theme.dimens.PTpmedieroDimensDefaults.Dimens30
@@ -19,6 +20,7 @@ private object PTpmedieroDimensDefaults {
     val Dimens6: Dp = 6.dp
     val Dimens8: Dp = 8.dp
     val Dimens10: Dp = 10.dp
+    val Dimens15: Dp = 15.dp
     val Dimens20: Dp = 20.dp
     val Dimens30: Dp = 30.dp
     val Dimens50: Dp = 50.dp
@@ -32,6 +34,7 @@ data class PtpmedieroDimens(
     val dimens6: Dp = Dimens6,
     val dimens8: Dp = Dimens8,
     val dimens10: Dp = Dimens10,
+    val dimens15: Dp = Dimens15,
     val dimens20: Dp = Dimens20,
     val dimens30: Dp = Dimens30,
     val dimens50: Dp = Dimens50,
