@@ -11,9 +11,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import com.example.pruebatecnica.pablomediero.core.ui.theme.PTpmedieroTheme
 import com.example.pruebatecnica.pablomediero.core.ui.uistates.UIState
-import com.example.pruebatecnica.pablomediero.data.datasources_core.HttpErrorCodeException
-import com.example.pruebatecnica.pablomediero.data.datasources_core.HttpErrorCodeException.Companion.NO_CONNECTION_ERROR_CODE
-import com.example.pruebatecnica.pablomediero.data.datasources_core.HttpErrorCodeException.Companion.UNKNOWN_ERROR_CODE
+import com.example.pruebatecnica.pablomediero.data.datasources_core.remote.HttpErrorCodeException
+import com.example.pruebatecnica.pablomediero.data.datasources_core.remote.HttpErrorCodeException.Companion.NO_CONNECTION_ERROR_CODE
+import com.example.pruebatecnica.pablomediero.data.datasources_core.remote.HttpErrorCodeException.Companion.UNKNOWN_ERROR_CODE
 
 @Composable
 fun CustomDialog(

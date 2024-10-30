@@ -2,6 +2,8 @@ package com.example.pruebatecnica.pablomediero.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.pruebatecnica.pablomediero.core.ui.uistates.UIState
 import com.example.pruebatecnica.pablomediero.data.models.User
 import com.example.pruebatecnica.pablomediero.domain.usecases.GetUsersDataUseCase
@@ -18,6 +20,9 @@ class UserViewModel(
     private val _usersFlow = MutableStateFlow<UIState<List<User>>>(UIState.Loading)
     val usersFlow: MutableStateFlow<UIState<List<User>>> = _usersFlow
 
+    val usersPagingData: StateFlow<PagingData<User>> = getUsersDataUseCase()
+        .cachedIn(viewModelScope)
+        .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
     private val _user = MutableStateFlow<UIState<User>>(UIState.Loading)
     val user: StateFlow<UIState<User>> = _user
 
@@ -50,7 +55,7 @@ class UserViewModel(
         }
     }
 
-    fun fetchRandomUsers() {
+    /*fun fetchRandomUsers() {
         viewModelScope.launch {
             _usersFlow.value = UIState.Loading
             getUsersDataUseCase().collect { result ->
@@ -60,7 +65,7 @@ class UserViewModel(
                 )
             }
         }
-    }
+    }*/
 
     fun getUserDetail(userEmail: String) {
         viewModelScope.launch {

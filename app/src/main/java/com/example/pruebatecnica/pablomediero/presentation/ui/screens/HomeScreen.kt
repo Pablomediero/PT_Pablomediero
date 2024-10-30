@@ -3,6 +3,7 @@ package com.example.pruebatecnica.pablomediero.presentation.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -39,15 +40,16 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
 import com.example.pruebatecnica.pablomediero.core.composable.CustomDialog
 import com.example.pruebatecnica.pablomediero.core.ui.annotations.ThemePreviews
 import com.example.pruebatecnica.pablomediero.core.ui.composables.CustomCircleImage
 import com.example.pruebatecnica.pablomediero.core.ui.composables.CustomNavigationComponentWithSearch
 import com.example.pruebatecnica.pablomediero.core.ui.theme.PTpmedieroTheme
-import com.example.pruebatecnica.pablomediero.core.ui.uistates.UIState
 import com.example.pruebatecnica.pablomediero.data.models.User
-import com.example.pruebatecnica.pablomediero.presentation.navigation.AppRoutes
 import com.example.pruebatecnica.pablomediero.presentation.viewmodels.UserViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -63,70 +65,72 @@ fun HomeScreen(
     val isLoading = remember { mutableStateOf(false) }
     var showErrorDialog by rememberSaveable{ mutableStateOf(false) }
     //var searchQuery by remember { mutableStateOf("Hello") }
+    val usersPagingData = userViewModel.usersPagingData.collectAsLazyPagingItems()
 
-    when (val state = usersData) {
-        UIState.Loading -> {
-            isLoading.value = true
-            showErrorDialog = false
-        }
-
-        is UIState.Error -> {
-            showErrorDialog = true
-            isLoading.value = false
-        }
-
-        is UIState.Success -> {
-            usersList.value = state.data!!
-            isLoading.value = false
-            showErrorDialog = false
-        }
-    }
     LaunchedEffect(Unit) {
-        userViewModel.fetchRandomUsers()
+        //userViewModel.fetchRandomUsers()
     }
+
+    when {
+        //Carga inicial
+        usersPagingData.loadState.refresh is LoadState.Loading && usersPagingData.itemCount == 0 -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(64.dp), color = Color.White
+                )
+            }
+        }
+
+        //Estado vacio
+        usersPagingData.loadState.refresh is LoadState.NotLoading && usersPagingData.itemCount == 0 -> {
+            Text(text = "Todavía no hay personajes")
+        }
+
+        usersPagingData.loadState.hasError -> {
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .background(Color.Red), contentAlignment = Alignment.Center
+            ) {
+                Text(text = "Ha ocurrido un error")
+            }
+        }
+
+        else -> {
+            UsersList(usersPagingData)
+            if (usersPagingData.loadState.append is LoadState.Loading) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(64.dp), color = Color.White
+                    )
+                }
+            }
+        }
+    }
+
+
     CustomDialog(
         showDialog = showErrorDialog,
         uiState = usersData,
         onDismiss = {
             showErrorDialog = false
-            userViewModel.fetchRandomUsers()
+            //userViewModel.fetchRandomUsers()
         }
     )
-    Column(
-        modifier = Modifier
-            .background(MaterialTheme.colorScheme.background)
-            .fillMaxSize()
-    ) {
-        HeaderHomeScreen(
-            modifier = Modifier
-                .padding(top = PTpmedieroTheme.dimens.dimens20)
-                .background(MaterialTheme.colorScheme.background)
-                .fillMaxWidth(),
-            value = searchQuery,
-            onValueChange = { userViewModel.updateSearchQuery(it)}
-        )
-        BodyHomeScreen(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
-                .padding(
-                    top = PTpmedieroTheme.dimens.dimens10,
-                    start = PTpmedieroTheme.dimens.dimens10
-                )
-                .fillMaxSize(),
-            users = filteredUsers ?: emptyList(),
-            isLoading = isLoading.value,
-            onItemClick = { userEmail ->
-                userViewModel.updateSearchQuery("")
-                navController.navigate(
-                    "${AppRoutes.DetailScreen.route}/$userEmail"
-                )
-            }
 
-        )
+}
+@Composable
+fun UsersList(users: LazyPagingItems<User>) {
+
+    LazyColumn {
+        items(users.itemCount) {
+            users[it]?.let { users ->
+                ItemUser(users){}
+            }
+        }
     }
 
 }
-
 @Composable
 fun HeaderHomeScreen(
     modifier: Modifier,

@@ -79,9 +79,10 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.com.jakewharton.timber)
     implementation(libs.io.coil)
+    implementation(libs.androidx.paging3)
+    implementation(libs.androidx.paging3.compose)
 
     implementation(libs.bundles.testing)
-
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

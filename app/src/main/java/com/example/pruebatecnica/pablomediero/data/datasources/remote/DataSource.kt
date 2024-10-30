@@ -1,8 +1,9 @@
 package com.example.pruebatecnica.pablomediero.data.datasources.remote
 
-import com.example.pruebatecnica.pablomediero.data.models.ApiResponse
+import androidx.paging.PagingData
+import com.example.pruebatecnica.pablomediero.data.models.User
 import kotlinx.coroutines.flow.Flow
 
 interface DataSource {
-    suspend fun getAllUsersData(): Flow<Result<ApiResponse>>
+    fun getAllUsersData():Flow<PagingData<User>>
 }
